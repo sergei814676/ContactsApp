@@ -10,11 +10,11 @@ using Newtonsoft.Json;
 
 namespace ContactsApp
 {
-    //TODO: именование
+    
     public static class Projectmanager
     {
-        private const string FilePath = @"C:\Users\User\Documents\ContactsApp.notes";
-
+        
+        public static string FilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/ContactsApp.notes";
         ///<summary>
         ///сохраняет список контактов в файл 
         ///</summary>

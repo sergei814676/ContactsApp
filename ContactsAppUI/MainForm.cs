@@ -13,9 +13,8 @@ namespace ContactsApp
 {
     public partial class MainForm : Form
     {
-        //TODO: должно быть закрытое и не статическое
-        //TODO: именование
-        private Project Contacts = new Project();
+      
+         private Project Contacts = new Project();
         public MainForm()
         {
             InitializeComponent();
@@ -155,6 +154,11 @@ namespace ContactsApp
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
     }

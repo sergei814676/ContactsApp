@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.TextBox textBox2;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.ContactslistBox = new System.Windows.Forms.ListBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
             this.SurnameTextBox = new System.Windows.Forms.TextBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.NameTextBox = new System.Windows.Forms.TextBox();
@@ -56,6 +56,7 @@
             this.removeContactToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            textBox2 = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -79,16 +80,17 @@
             this.textBox1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox1.Location = new System.Drawing.Point(12, 28);
             this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(30, 13);
             this.textBox1.TabIndex = 2;
             this.textBox1.Text = "Find:";
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(37, 25);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(305, 20);
-            this.textBox2.TabIndex = 3;
+            textBox2.Location = new System.Drawing.Point(37, 25);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new System.Drawing.Size(305, 20);
+            textBox2.TabIndex = 3;
             // 
             // SurnameTextBox
             // 
@@ -107,9 +109,11 @@
             // 
             this.textBox4.BackColor = System.Drawing.SystemColors.Control;
             this.textBox4.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox4.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.textBox4.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.textBox4.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.textBox4.Location = new System.Drawing.Point(362, 28);
             this.textBox4.Name = "textBox4";
+            this.textBox4.ReadOnly = true;
             this.textBox4.Size = new System.Drawing.Size(50, 13);
             this.textBox4.TabIndex = 4;
             this.textBox4.Text = "Surname:";
@@ -287,7 +291,7 @@
             // exitToolStripMenuItem1
             // 
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(92, 22);
             this.exitToolStripMenuItem1.Text = "Exit";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
             // 
@@ -359,7 +363,7 @@
             this.Controls.Add(this.textBox6);
             this.Controls.Add(this.SurnameTextBox);
             this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(textBox2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.ContactslistBox);
@@ -369,6 +373,7 @@
             this.Name = "MainForm";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Text = "ContactsApp";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -380,7 +385,6 @@
 
         private System.Windows.Forms.ListBox ContactslistBox;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox SurnameTextBox;
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.TextBox NameTextBox;

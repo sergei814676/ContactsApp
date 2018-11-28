@@ -7,7 +7,9 @@ using System.Collections;
 using ContactsApp;
 namespace ContactsApp
 {
-    //TODO: xml
+    ///<summary>
+    ///класс с массивом контактов 
+    ///</summary>
     public class Project
     {
 

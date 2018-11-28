@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
 
-using ContactsApp;
+
 //TODO: изменить пространстао имен
 //TODO: решарпер
 namespace ContactsApp
@@ -136,7 +136,7 @@ namespace ContactsApp
             set
             {
 
-                DateTime date1 = new DateTime(1900);
+                DateTime date1 = new DateTime(1900, 01, 01);
                 DateTime date2 = DateTime.Today;
                 if ((value < date1) || (value > date2))
                 {  throw new ArgumentException("Дата рождения должна быть корректной");   }
@@ -148,7 +148,41 @@ namespace ContactsApp
         ///<summary>
         ///Возвращает, задает номер телефона контакта 
         ///</summary>
-        public PhoneNumber Number { set; get; } = new PhoneNumber();    
+        public PhoneNumber Number { set; get; } = new PhoneNumber();
+
+
+
+        public static bool operator !=(Contact c1, Contact c2)
+        {
+            if (c1.Surname == c2.Surname ||
+                c1.Name == c2.Name ||
+                c1.Mail == c2.Mail ||
+                c1.IDVK == c2.IDVK ||
+                c1.Bdate == c2.Bdate)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool operator ==(Contact c1, Contact c2)
+        {
+            if (c1.Surname == c2.Surname &&
+                c1.Name == c2.Name &&
+                c1.Mail == c2.Mail &&
+                c1.IDVK == c2.IDVK &&
+                c1.Bdate == c2.Bdate)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
 
