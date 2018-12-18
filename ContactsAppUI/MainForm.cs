@@ -1,32 +1,50 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using ContactsApp;
 
 namespace ContactsApp
 {
     public partial class MainForm : Form
     {
-      
-         private Project Contacts = new Project();
+
+        private Project Contacts = new Project();
+        private Project BdataContacts = new Project();
+
         public MainForm()
         {
             InitializeComponent();
             Contacts = Projectmanager.Deserialization();
+            Contacts.СontactsList = Contacts.SortingContacts();
+            KeyDown += new KeyEventHandler(PressDeleteButton);
+            label1.Text = "Дни рождения: ";
             foreach (var contact in Contacts.СontactsList)
             {
                 ContactslistBox.Items.Add(contact.Surname);
             }
+
+            BdataContacts.СontactsList = Contacts.BdataContacts();
+            if (BdataContacts.СontactsList.Count != 0)
+            {
+
+                foreach (var contact in BdataContacts.СontactsList)
+                {
+                    label1.Text = label1.Text + contact.Surname;
+                }
+            }
+            else
+            {
+                panel1.Visible = false;
+            }
+
         }
-        //TODO: не надо поля
-      
-        //TODO: удалить пустые обработчики
+
+
+
+        private void PressDeleteButton(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            { DeleteContact(); }
+        }
+
         private void EditButton_Click(object sender, EventArgs e) ///редактирование контакта
         {
             EditContact();
@@ -35,47 +53,51 @@ namespace ContactsApp
 
         private void DeleteButton_Click(object sender, EventArgs e) ///удаление
         {
-           
-                DeleteContact();
-            
+
+            DeleteContact();
+
         }
+
+
         private void AddButton_Click(object sender, EventArgs e) ///добавление нового контакта
         {
             AddContact();
 
         }
 
-      
-        
-        
 
-        private void EditContact() ///метож для редактирование контакта
+        ///<summary>
+        ///метод для редактирование контакта 
+        ///</summary>
+        private void EditContact() ///метод для редактирование контакта
         {
             var sIndex = ContactslistBox.SelectedIndex;
             var inner = new ContactForm();
             if (sIndex == -1)
             {
-
+                return;
             }
             else
             {
-            inner.Contact = Contacts.СontactsList[sIndex];
-            var result = inner.ShowDialog(this);
-            if (result == DialogResult.OK)
-            {
-                var upCont = inner.Contact;
-                ContactslistBox.Items.Clear();
-                Contacts.СontactsList.RemoveAt(sIndex);
-                Contacts.СontactsList.Add(upCont);
-
-              
-                foreach (var contact in Contacts.СontactsList)
+                inner.Contact = Contacts.SortingContacts(FindTextBox2.Text)[sIndex];
+                var result = inner.ShowDialog(this);
+                if (result == DialogResult.OK)
                 {
-                    ContactslistBox.Items.Add(contact.Surname);
+                    var upCont = inner.Contact;
+
+                    Contacts.СontactsList.RemoveAt(sIndex);
+                    Contacts.СontactsList.Add(upCont);
+                    Contacts.СontactsList = Contacts.SortingContacts();
+                    LookContacts();
+                    Projectmanager.Serialization(Contacts);
                 }
-                Projectmanager.Serialization(Contacts); }
             }
         }
+
+
+        ///<summary>
+        ///метод для создания нового контакта 
+        ///</summary>
         private void AddContact()///метод для создание нового контакта
         {
             var sIndex = ContactslistBox.SelectedIndex;// вытащили ндекс выбранного элемента
@@ -85,36 +107,44 @@ namespace ContactsApp
             if (result == DialogResult.OK)// если нажато ок в окне, то сработает это условие
             {
                 var upCont = addater.Contact; //создали новый класс, с одним кантактом, и записали в него то что заполнили в окне
-                ContactslistBox.Items.Clear();// очистили листбокс
-                Contacts.СontactsList.Add(upCont);//добавили в массив контактов, наш новвосозданный контакт
 
-               
-                foreach (var contact in Contacts.СontactsList)//з   аполнили лист бокс
-                {
-                    ContactslistBox.Items.Add(contact.Surname);
-                }
+
+                Contacts.СontactsList.Add(upCont);//добавили в массив контактов, наш новвосозданный контакт
+                Contacts.СontactsList = Contacts.SortingContacts();
+                LookContacts();
                 Projectmanager.Serialization(Contacts);//сохранили в файл новый массив, с новым контактом
             }
 
         }
 
+
+        ///<summary>
+        ///метод для удаления контакта 
+        ///</summary>
         private void DeleteContact() ///метод для удаление контакта
         {
             if (MessageBox.Show(
                     "Do you really want to remove this contacts: " +
-                    Contacts.СontactsList[ContactslistBox.SelectedIndex].Surname,
-                    "DeleteNote", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                    Contacts.SortingContacts(FindTextBox2.Text)[ContactslistBox.SelectedIndex].Surname,
+                    "Delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
             {
                 var selectedIndex = ContactslistBox.SelectedIndex; // вытащили ндекс выбранного элемента
-                Contacts.СontactsList.RemoveAt(selectedIndex);
-                Projectmanager.Serialization(Contacts);
-                ContactslistBox.Items.Clear();
-                foreach (var contact in Contacts.СontactsList)
+                if (FindTextBox2.Text == "")
                 {
-                    ContactslistBox.Items.Add(contact.Surname);
+                    Contacts.СontactsList.RemoveAt(selectedIndex);
                 }
+                else
+                {
+                   Contacts.СontactsList.RemoveAt(Contacts.СontactsList.IndexOf(Contacts.SortingContacts(FindTextBox2.Text)[ContactslistBox.SelectedIndex]));
+               
+                }
+                     
+                     // Contacts.СontactsList.RemoveAt(selectedIndex);
+                  Projectmanager.Serialization(Contacts);
+                LookContacts();
             }
         }
+
 
         private void AboutToolStripMenu(object sender, EventArgs e) //вывод окна информации
         {
@@ -122,34 +152,55 @@ namespace ContactsApp
             aboutForm.ShowDialog(this);
         }
 
+
         private void AddContactToolStripMenu(object sender, EventArgs e) //создание контакта, через верхнее еню
         {
             AddContact();
         }
+
 
         private void EditContactToolStripMenu(object sender, EventArgs e)// редактирование контакта, через верхнее меню
         {
             EditContact();
         }
 
+
         private void RemoveContactToolStripMenu(object sender, EventArgs e)//удаление контакта, через верхнее меню
         {
             DeleteContact();
         }
+
 
         private void listBoxContacts(object sender, EventArgs e)
         {
 
             if (ContactslistBox.SelectedIndex != -1)
             {
-                SurnameTextBox.Text = Contacts.СontactsList[ContactslistBox.SelectedIndex].Surname;
-                NameTextBox.Text = Contacts.СontactsList[ContactslistBox.SelectedIndex].Name;
-                BdateDateTime.Value = Contacts.СontactsList[ContactslistBox.SelectedIndex].Bdate;
-                NumberTextBox.Text = Contacts.СontactsList[ContactslistBox.SelectedIndex].Number.Number.ToString();
-                MailTextBox.Text = Contacts.СontactsList[ContactslistBox.SelectedIndex].Mail;
-                IDVKextBox.Text = Contacts.СontactsList[ContactslistBox.SelectedIndex].IDVK;
+                if (FindTextBox2.Text == "")
+                {
+                    SurnameTextBox.Text = Contacts.СontactsList[ContactslistBox.SelectedIndex].Surname;
+                    NameTextBox.Text = Contacts.СontactsList[ContactslistBox.SelectedIndex].Name;
+                    BdateDateTime.Value = Contacts.СontactsList[ContactslistBox.SelectedIndex].Bdate;
+                    NumberTextBox.Text = Contacts.СontactsList[ContactslistBox.SelectedIndex].Number.Number.ToString();
+                    MailTextBox.Text = Contacts.СontactsList[ContactslistBox.SelectedIndex].Mail;
+                    IDVKextBox.Text = Contacts.СontactsList[ContactslistBox.SelectedIndex].IDVK;
+                }
+
+                else
+                {
+                    SurnameTextBox.Text = Contacts.SortingContacts(FindTextBox2.Text)[ContactslistBox.SelectedIndex]
+                        .Surname;
+                    NameTextBox.Text = Contacts.SortingContacts(FindTextBox2.Text)[ContactslistBox.SelectedIndex].Name;
+                    BdateDateTime.Value =
+                        Contacts.SortingContacts(FindTextBox2.Text)[ContactslistBox.SelectedIndex].Bdate;
+                    NumberTextBox.Text = Contacts.SortingContacts(FindTextBox2.Text)[ContactslistBox.SelectedIndex]
+                        .Number.Number.ToString();
+                    MailTextBox.Text = Contacts.SortingContacts(FindTextBox2.Text)[ContactslistBox.SelectedIndex].Mail;
+                    IDVKextBox.Text = Contacts.SortingContacts(FindTextBox2.Text)[ContactslistBox.SelectedIndex].IDVK;
+                }
             }
         }
+
 
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
         {
@@ -160,9 +211,42 @@ namespace ContactsApp
         {
 
         }
+
+        private void LookContacts()
+        {
+
+            if (FindTextBox2.Text == "")
+            {
+                ContactslistBox.Items.Clear();
+                foreach (var contact in Contacts.СontactsList)
+                {
+
+                    ContactslistBox.Items.Add(contact.Surname);
+                }
+            }
+            else
+            {
+                ContactslistBox.Items.Clear();
+                foreach (var contact in Contacts.SortingContacts(FindTextBox2.Text))
+                {
+                    ContactslistBox.Items.Add(contact.Surname);
+                }
+            }
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            LookContacts();
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
-    }
+}
 
 
-    
+
 

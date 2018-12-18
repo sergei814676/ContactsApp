@@ -30,7 +30,7 @@ namespace ContactsApp
                 }
                 else
                 {
-                    throw new ArgumentException("Телефон должty быть введен корректно(начинаться с 7 и иметь длинну 11 цифр");
+                    throw new ArgumentException("Телефон должен быть введен корректно начинаться с 7 и иметь длинну 11 цифр");
                 }
             }
             get { return _Number; }

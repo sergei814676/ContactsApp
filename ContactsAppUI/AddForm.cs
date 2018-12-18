@@ -11,7 +11,7 @@ using ContactsApp;
 
 namespace ContactsApp
 {
-    //TODO: переименовать в ContactForm!
+   
     public partial class ContactForm : Form
     {
         public ContactForm()
@@ -20,7 +20,7 @@ namespace ContactsApp
         }
 
 
-public Contact Cont;
+public Contact _сontact;
 
             
 
@@ -28,20 +28,20 @@ public Contact Contact
         {
             get
             {
-                return Cont;
+                return _сontact;
             }
             set
             {
-                Cont = value;
-                if (Cont !=null )
+                _сontact = value;
+                if (_сontact !=null )
                 {
                     
-                    SurnameTextBox.Text = Cont.Surname;
-                    NameTextBox.Text = Cont.Name;
-                    MailTextBox.Text = Cont.Mail;
-                    IDVKTextBox11.Text = Cont.IDVK;
-                    BdateDateTime.Value = Cont.Bdate;
-                    PhoneNumberTextBox.Text = Cont.Number.Number.ToString();
+                    SurnameTextBox.Text = _сontact.Surname;
+                    NameTextBox.Text = _сontact.Name;
+                    MailTextBox.Text = _сontact.Mail;
+                    IDVKTextBox11.Text = _сontact.IDVK;
+                    BdateDateTime.Value = _сontact.Bdate;
+                    PhoneNumberTextBox.Text = _сontact.Number.Number.ToString();
                 }
                 else
                 {
@@ -60,19 +60,19 @@ public Contact Contact
         }
         private void OkButton_Click(object sender, EventArgs e)
         {
-            Cont = new Contact();
+            _сontact = new Contact();
            
-                Cont.Surname = SurnameTextBox.Text;
+              
             try
             {
-                Cont.Number.Number = Convert.ToInt64(PhoneNumberTextBox.Text);
+                _сontact.Number.Number = Convert.ToInt64(PhoneNumberTextBox.Text);
 
+  _сontact.Surname = SurnameTextBox.Text;
 
-
-            Cont.Mail = MailTextBox.Text;
-            Cont.IDVK = IDVKTextBox11.Text;
-            Cont.Bdate = BdateDateTime.Value;
-                Cont.Name = NameTextBox.Text;
+            _сontact.Mail = MailTextBox.Text;
+            _сontact.IDVK = IDVKTextBox11.Text;
+            _сontact.Bdate = BdateDateTime.Value;
+                _сontact.Name = NameTextBox.Text;
             DialogResult = DialogResult.OK;
             Close();
             }

@@ -151,38 +151,7 @@ namespace ContactsApp
         public PhoneNumber Number { set; get; } = new PhoneNumber();
 
 
-
-        public static bool operator !=(Contact c1, Contact c2)
-        {
-            if (c1.Surname == c2.Surname ||
-                c1.Name == c2.Name ||
-                c1.Mail == c2.Mail ||
-                c1.IDVK == c2.IDVK ||
-                c1.Bdate == c2.Bdate)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public static bool operator ==(Contact c1, Contact c2)
-        {
-            if (c1.Surname == c2.Surname &&
-                c1.Name == c2.Name &&
-                c1.Mail == c2.Mail &&
-                c1.IDVK == c2.IDVK &&
-                c1.Bdate == c2.Bdate)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        
     }
 }
 

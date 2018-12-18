@@ -174,6 +174,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(408, 268);
+            this.ControlBox = false;
             this.Controls.Add(this.IDVKTextBox11);
             this.Controls.Add(this.MailTextBox);
             this.Controls.Add(this.BdateDateTime);
@@ -189,7 +190,7 @@
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
             this.Name = "ContactForm";
-            this.Text = "AddForm";
+            this.Text = "Contact Form";
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -21,29 +21,21 @@ namespace ContactsApp.UnitTest
             Contact contactTest=new Contact();
             contactTest.Number.Number = 70987654321;
             contactTest.Bdate =new DateTime(2000, 3, 2);
-      
             contactTest.IDVK = "id76543";
             contactTest.Mail = "sytrew@uyt.com";
             contactTest.Name = "Sytre";
             contactTest.Surname = "Uytrer";
             TestSaveProject.СontactsList.Add(contactTest);
             Projectmanager.Serialization(TestSaveProject);
-            Project actual = new Project(); 
-                
+            Project actual = new Project();    
               actual= Projectmanager.Deserialization();
             Project exception = TestSaveProject;
             Projectmanager.Serialization(TestCopy);
-
             bool TestTrue = true;
-            
             if (actual.СontactsList[0] == exception.СontactsList[0] )
-            {
-                TestTrue = true;
-            }
+            { TestTrue = true;}
             else
-            {
-                TestTrue = false;
-            }
+            { TestTrue = false; }
             Assert.AreEqual(true, TestTrue, " Десериализация не верна проходит");
 
         }
